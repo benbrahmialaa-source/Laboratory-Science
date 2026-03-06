@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بيولوجيا | السنة الثانية ثانوي - علوم تجريبية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00c896;
+    --green-dark: #007a5e;
+    --green-light: #b2f5e4;
+    --blue: #0a2540;
+    --blue-mid: #163d6b;
+    --accent: #f7c948;
+    --accent2: #ff6b6b;
+    --white: #f9fefe;
+    --gray: #e8f5f2;
+    --text: #0d1f1a;
+    --card-bg: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--blue);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ===== BACKGROUND ===== */
+  .bg-canvas {
+    position: fixed; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 20% 20%, #0d3d2e 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 80%, #163d6b 0%, transparent 55%),
+                #0a1a2e;
+  }
+  .bg-canvas::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,200,150,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .dna-float {
+    position: fixed; top: 0; left: 5%;
+    width: 2px; height: 100vh;
+    background: linear-gradient(to bottom, transparent, rgba(0,200,150,0.15), transparent);
+    z-index: 0;
+  }
+  .dna-float::after {
+    content: '';
+    position: fixed; top: 0; right: 5%;
+    width: 2px; height: 100vh;
+    background: linear-gradient(to bottom, transparent, rgba(247,201,72,0.1), transparent);
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative; z-index: 10;
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(0,200,150,0.15);
+    backdrop-filter: blur(10px);
+    background: rgba(10,25,46,0.6);
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 900; font-size: 1.3rem;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--green), #007a5e);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 20px rgba(0,200,150,0.4);
+  }
+  .badge {
+    background: linear-gradient(135deg, var(--accent), #e6b800);
+    color: #000;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 83px; right: 0;
+    width: 100%; z-index: 9;
+    background: rgba(10,25,46,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,200,150,0.1);
+    display: flex; justify-content: center;
+    gap: 6px; padding: 10px 20px;
+  }
+  nav a {
+    color: rgba(249,254,254,0.7);
+    text-decoration: none;
+    font-size: 0.88rem; font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color: var(--green);
+    background: rgba(0,200,150,0.1);
+    border-color: rgba(0,200,150,0.3);
+  }
+
+  /* ===== MAIN WRAPPER ===== */
+  main { position: relative; z-index: 5; }
+
+  /* ===== HERO SECTION ===== */
+  #home {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 140px 40px 80px;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,200,150,0.1);
+    border: 1px solid rgba(0,200,150,0.3);
+    color: var(--green);
+    font-size: 0.82rem; font-weight: 600;
+    padding: 8px 20px; border-radius: 30px;
+    margin-bottom: 30px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeDown 0.9s ease 0.1s both;
+  }
+  .hero-title span {
+    background: linear-gradient(90deg, var(--green), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: rgba(249,254,254,0.65);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 50px;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  /* DNA ANIMATION */
+  .dna-visual {
+    position: relative; width: 120px; height: 120px;
+    margin: 0 auto 40px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .dna-visual svg { animation: spin 8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* LESSON CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1100px; width: 100%;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+  .lesson-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 20px;
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    position: relative; overflow: hidden;
+  }
+  .lesson-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--card-color, rgba(0,200,150,0.05)), transparent);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .lesson-card:hover { transform: translateY(-8px); border-color: var(--card-color, var(--green)); box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(0,200,150,0.1); }
+  .lesson-card:hover::before { opacity: 1; }
+  .card-num {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--card-color, var(--green)), var(--card-color2, #007a5e));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 1.6rem;
+    box-shadow: 0 8px 24px rgba(0,200,150,0.25);
+  }
+  .card-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .card-desc { font-size: 0.82rem; color: rgba(249,254,254,0.5); line-height: 1.6; }
+  .card-arrow {
+    margin-top: 18px; display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.8rem; color: var(--green); font-weight: 600;
+    transition: gap 0.3s;
+  }
+  .lesson-card:hover .card-arrow { gap: 10px; }
+
+  /* ===== SECTION STYLES ===== */
+  section {
+    padding: 100px 40px 60px;
+    max-width: 1100px; margin: 0 auto;
+    position: relative; z-index: 5;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 50px;
+  }
+  .section-icon {
+    width: 54px; height: 54px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.8rem; font-weight: 900;
+  }
+  .section-title span { color: var(--green); }
+  .section-line {
+    height: 3px; width: 60px;
+    background: linear-gradient(90deg, var(--green), transparent);
+    margin-top: 8px; border-radius: 2px;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid rgba(0,200,150,0.1);
+    margin: 20px 0 60px;
+  }
+
+  /* ===== LESSON 1: ADN ===== */
+  .content-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,200,150,0.12);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    transition: border-color 0.3s;
+  }
+  .content-block:hover { border-color: rgba(0,200,150,0.3); }
+  .block-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--green); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .block-title::before {
+    content: '';
+    width: 4px; height: 20px;
+    background: var(--green);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .block-text {
+    color: rgba(249,254,254,0.8);
+    line-height: 2; font-size: 0.95rem;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(0,200,150,0.08), rgba(0,200,150,0.02));
+    border: 1px solid rgba(0,200,150,0.25);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 0.9rem; color: rgba(249,254,254,0.85);
+    line-height: 1.9;
+  }
+  .dna-structure {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 20px 0;
+  }
+  .struct-item {
+    background: rgba(0,200,150,0.06);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 12px; padding: 16px;
+    text-align: center;
+  }
+  .struct-item .emoji { font-size: 2rem; margin-bottom: 8px; }
+  .struct-item .label { font-size: 0.85rem; font-weight: 600; color: var(--green); margin-bottom: 4px; }
+  .struct-item .desc { font-size: 0.78rem; color: rgba(249,254,254,0.6); }
+
+  /* BASES TABLE */
+  .bases-table {
+    width: 100%; border-collapse: collapse;
+    margin: 20px 0; font-size: 0.88rem;
+  }
+  .bases-table th {
+    background: rgba(0,200,150,0.15);
+    color: var(--green); padding: 12px;
+    text-align: center; font-weight: 700;
+    border: 1px solid rgba(0,200,150,0.2);
+  }
+  .bases-table td {
+    padding: 11px 14px; text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: rgba(249,254,254,0.8);
+    transition: background 0.2s;
+  }
+  .bases-table tr:hover td { background: rgba(0,200,150,0.05); }
+  .base-A { color: #ff6b6b; font-weight: 700; }
+  .base-T { color: #4fc3f7; font-weight: 700; }
+  .base-G { color: #81c784; font-weight: 700; }
+  .base-C { color: #ffb74d; font-weight: 700; }
+
+  /* DNA SVG INTERACTIVE */
+  .dna-interactive {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    margin: 24px 0;
+  }
+  .dna-interactive svg { max-width: 100%; }
+
+  /* ===== LESSON 2: GENETICS ===== */
+  .genetics-diagram {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 16px; margin: 20px 0;
+  }
+  .geno-item {
+    background: rgba(247,201,72,0.06);
+    border: 1px solid rgba(247,201,72,0.2);
+    border-radius: 14px; padding: 20px;
+    text-align: center;
+  }
+  .geno-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .geno-label { color: var(--accent); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; }
+  .geno-desc { font-size: 0.78rem; color: rgba(249,254,254,0.6); line-height: 1.6; }
+
+  .allele-box {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .allele {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid var(--col, rgba(0,200,150,0.3));
+    border-radius: 10px; padding: 12px 20px;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700; font-size: 1.1rem;
+    color: var(--col, var(--green));
+    transition: transform 0.2s;
+    cursor: default;
+  }
+  .allele:hover { transform: scale(1.05); }
+
+  /* PUNNETT SQUARE */
+  .punnett {
+    display: inline-grid;
+    grid-template-columns: 50px 90px 90px;
+    grid-template-rows: 50px 90px 90px;
+    gap: 3px;
+    background: rgba(0,200,150,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px auto; display: grid;
+  }
+  .punnett-cell {
+    background: rgba(10,25,46,0.8);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem;
+    font-family: 'Cairo', sans-serif;
+  }
+  .punnett-cell.header { background: rgba(0,200,150,0.2); color: var(--green); font-size: 1.3rem; }
+  .punnett-cell.result { color: var(--accent); }
+  .punnett-cell.recessive { color: var(--accent2); }
+
+  /* ===== LESSON 3: MUTATION ===== */
+  .mutation-types {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 20px 0;
+  }
+  .mut-card {
+    background: rgba(255,107,107,0.06);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 14px; padding: 22px;
+    transition: all 0.3s;
+  }
+  .mut-card:hover { border-color: rgba(255,107,107,0.5); transform: translateY(-3px); }
+  .mut-title { color: var(--accent2); font-weight: 700; font-size: 0.95rem; margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+  .mut-text { font-size: 0.83rem; color: rgba(249,254,254,0.65); line-height: 1.7; }
+
+  /* DNA CHANGE ANIMATION */
+  .dna-change {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 14px; padding: 24px;
+    margin: 20px 0; text-align: center;
+  }
+  .seq-row { display: flex; gap: 6px; justify-content: center; margin: 10px 0; flex-wrap: wrap; }
+  .base-box {
+    width: 38px; height: 38px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1rem;
+    transition: all 0.4s;
+  }
+  .base-box.A { background: rgba(255,107,107,0.2); color: #ff6b6b; border: 2px solid rgba(255,107,107,0.4); }
+  .base-box.T { background: rgba(79,195,247,0.2); color: #4fc3f7; border: 2px solid rgba(79,195,247,0.4); }
+  .base-box.G { background: rgba(129,199,132,0.2); color: #81c784; border: 2px solid rgba(129,199,132,0.4); }
+  .base-box.C { background: rgba(255,183,77,0.2); color: #ffb74d; border: 2px solid rgba(255,183,77,0.4); }
+  .base-box.MUT { background: rgba(255,107,107,0.4); color: #fff; border: 2px solid #ff6b6b; animation: pulse 1s ease infinite; transform: scale(1.2); }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,107,107,0.5)} 50%{box-shadow:0 0 0 8px transparent} }
+
+  .seq-label { font-size: 0.82rem; color: rgba(249,254,254,0.5); margin-bottom: 4px; }
+  .arrow-down { font-size: 1.5rem; color: var(--accent2); margin: 5px 0; }
+  .btn-mut {
+    background: linear-gradient(135deg, var(--accent2), #c0392b);
+    border: none; color: white;
+    padding: 10px 24px; border-radius: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; margin-top: 14px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-mut:hover { opacity: 0.85; transform: scale(1.03); }
+
+  /* ===== GAME SECTION ===== */
+  #games {
+    padding: 100px 40px 80px;
+    max-width: 1100px; margin: 0 auto;
+    position: relative; z-index: 5;
+  }
+  .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* QUIZ GAME */
+  .game-panel {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 22px; padding: 30px;
+  }
+  .game-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: 1.1rem; font-weight: 800;
+    margin-bottom: 6px; display: flex; gap: 10px; align-items: center;
+  }
+  .game-sub { font-size: 0.8rem; color: rgba(249,254,254,0.5); margin-bottom: 24px; }
+  .quiz-question {
+    background: rgba(0,200,150,0.05);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 12px; padding: 16px;
+    font-size: 0.95rem; font-weight: 600;
+    margin-bottom: 18px; line-height: 1.7;
+  }
+  .quiz-options { display: grid; gap: 10px; }
+  .quiz-opt {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 12px 16px;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif; font-size: 0.9rem;
+    transition: all 0.25s; text-align: right;
+    color: rgba(249,254,254,0.8);
+  }
+  .quiz-opt:hover { border-color: rgba(0,200,150,0.4); background: rgba(0,200,150,0.07); color: white; }
+  .quiz-opt.correct { background: rgba(0,200,150,0.15); border-color: var(--green); color: var(--green); }
+  .quiz-opt.wrong { background: rgba(255,107,107,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .quiz-feedback {
+    margin-top: 14px; padding: 12px 16px;
+    border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(0,200,150,0.12); color: var(--green); border: 1px solid rgba(0,200,150,0.3); }
+  .quiz-feedback.err { background: rgba(255,107,107,0.12); color: var(--accent2); border: 1px solid rgba(255,107,107,0.3); }
+  .btn-next {
+    background: linear-gradient(135deg, var(--green), #007a5e);
+    border: none; color: white;
+    padding: 11px 28px; border-radius: 10px;
+    font-family: 'Tajawal', sans-serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; margin-top: 16px;
+    display: none; transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-next:hover { opacity: 0.85; transform: scale(1.03); }
+  .btn-next.show { display: inline-block; }
+  .score-box {
+    display: flex; gap: 14px; margin-bottom: 16px;
+    font-size: 0.82rem; color: rgba(249,254,254,0.6);
+  }
+  .score-box span { color: var(--green); font-weight: 700; }
+
+  /* DRAG DROP GAME */
+  .drag-area { margin: 16px 0; }
+  .drag-label { font-size: 0.82rem; color: rgba(249,254,254,0.5); margin-bottom: 10px; }
+  .drag-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .drag-item {
+    background: rgba(247,201,72,0.1);
+    border: 1.5px solid rgba(247,201,72,0.3);
+    color: var(--accent);
+    border-radius: 8px; padding: 8px 14px;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: grab; transition: all 0.2s;
+    user-select: none;
+  }
+  .drag-item:hover { background: rgba(247,201,72,0.2); transform: scale(1.05); }
+  .drag-item.dragging { opacity: 0.4; cursor: grabbing; }
+  .drop-zones { display: flex; flex-direction: column; gap: 10px; }
+  .drop-zone {
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 12px 16px;
+    min-height: 50px;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .drop-zone.over { border-color: rgba(0,200,150,0.5); background: rgba(0,200,150,0.05); }
+  .drop-zone .zone-label { font-size: 0.8rem; color: rgba(249,254,254,0.4); min-width: 100px; }
+  .drop-zone .zone-content { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .zone-dropped {
+    background: rgba(0,200,150,0.12);
+    border: 1px solid rgba(0,200,150,0.3);
+    color: var(--green);
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 0.8rem; font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-check {
+    background: linear-gradient(135deg, var(--accent), #e6b800);
+    border: none; color: #000;
+    padding: 10px 24px; border-radius: 10px;
+    font-family: 'Tajawal', sans-serif; font-size: 0.88rem; font-weight: 700;
+    cursor: pointer; margin-top: 12px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-check:hover { opacity: 0.85; transform: scale(1.03); }
+  .drag-result { margin-top: 10px; font-size: 0.85rem; font-weight: 600; display: none; }
+  .drag-result.show { display: block; }
+  .drag-result.ok { color: var(--green); }
+  .drag-result.err { color: var(--accent2); }
+
+  /* SEQUENCE GAME */
+  .sequence-game { margin-top: 10px; }
+  .seq-display {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(0,200,150,0.15);
+    border-radius: 12px; padding: 20px;
+    text-align: center; margin-bottom: 16px;
+  }
+  .comp-input {
+    display: flex; gap: 6px; justify-content: center;
+    flex-wrap: wrap; margin: 14px 0;
+  }
+  .base-btn {
+    padding: 10px 18px; border-radius: 8px; border: none;
+    font-weight: 900; font-size: 1rem;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'Cairo', sans-serif;
+  }
+  .base-btn.A { background: rgba(255,107,107,0.2); color: #ff6b6b; border: 2px solid rgba(255,107,107,0.4); }
+  .base-btn.T { background: rgba(79,195,247,0.2); color: #4fc3f7; border: 2px solid rgba(79,195,247,0.4); }
+  .base-btn.G { background: rgba(129,199,132,0.2); color: #81c784; border: 2px solid rgba(129,199,132,0.4); }
+  .base-btn.C { background: rgba(255,183,77,0.2); color: #ffb74d; border: 2px solid rgba(255,183,77,0.4); }
+  .base-btn:hover { transform: scale(1.1); opacity: 0.85; }
+  .user-seq { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 8px 0; min-height: 42px; }
+  .seq-check-row { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+  .btn-clear {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(249,254,254,0.7);
+    padding: 8px 18px; border-radius: 8px;
+    font-family: 'Tajawal', sans-serif; font-size: 0.85rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-clear:hover { background: rgba(255,255,255,0.12); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative; z-index: 5;
+    text-align: center; padding: 30px 20px;
+    border-top: 1px solid rgba(0,200,150,0.1);
+    font-size: 0.82rem; color: rgba(249,254,254,0.35);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:768px) {
+    header { padding: 16px 20px; }
+    #home { padding: 130px 20px 60px; }
+    section, #games { padding: 80px 20px 40px; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .dna-structure, .genetics-diagram, .mutation-types, .games-grid { grid-template-columns: 1fr; }
+    nav { gap: 3px; padding: 8px 10px; overflow-x: auto; justify-content: flex-start; }
+    nav a { font-size: 0.78rem; padding: 6px 10px; white-space: nowrap; }
+    .punnett { grid-template-columns: 40px 80px 80px; grid-template-rows: 40px 80px 80px; }
+    .punnett-cell { font-size: 0.9rem; }
+  }
+  @media(max-width:480px) {
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="dna-float"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🧬</div>
+    بيوسيانس
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <div class="badge">2ثا · علوم تجريبية</div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="active" onclick="setActive(this)">🏠 الرئيسية</a>
+  <a href="#adn" onclick="setActive(this)">🧬 الـ ADN</a>
+  <a href="#genetics" onclick="setActive(this)">🔬 الوراثة</a>
+  <a href="#mutation" onclick="setActive(this)">⚡ الطفرة</a>
+  <a href="#games" onclick="setActive(this)">🎮 الألعاب</a>
+</nav>
+
+<main>
+<!-- ===== HERO ===== -->
+<div id="home">
+  <div class="hero-tag">🎓 منصة تعليمية تفاعلية</div>
+  
+  <!-- DNA SVG -->
+  <div class="dna-visual">
+    <svg width="120" height="120" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(0,200,150,0.15)" stroke-width="1"/>
+      <circle cx="60" cy="60" r="40" fill="none" stroke="rgba(0,200,150,0.2)" stroke-width="1" stroke-dasharray="6 4"/>
+      <circle cx="60" cy="60" r="24" fill="rgba(0,200,150,0.08)" stroke="rgba(0,200,150,0.4)" stroke-width="2"/>
+      <text x="60" y="67" text-anchor="middle" font-size="22" fill="rgba(0,200,150,0.9)">🧬</text>
+      <!-- orbiting dots -->
+      <circle cx="60" cy="6" r="5" fill="rgba(247,201,72,0.8)">
+        <animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="60" cy="114" r="4" fill="rgba(255,107,107,0.8)">
+        <animateTransform attributeName="transform" type="rotate" from="180 60 60" to="540 60 60" dur="6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="6" cy="60" r="3" fill="rgba(79,195,247,0.8)">
+        <animateTransform attributeName="transform" type="rotate" from="90 60 60" to="450 60 60" dur="5s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">علم <span>الأحياء</span> الجزيئي<br>السنة الثانية ثانوي</h1>
+  <p class="hero-sub">استكشف عالم الجينات والـ ADN والوراثة والطفرات من خلال دروس تفاعلية شاملة ومبسطة</p>
+
+  <div class="cards-grid">
+    <a href="#adn" class="lesson-card" style="--card-color: rgba(0,200,150,0.4); --card-color2: #007a5e;">
+      <div class="card-num" style="background: linear-gradient(135deg,#00c896,#007a5e);">🧬</div>
+      <div class="card-title">الـ ADN</div>
+      <div class="card-desc">تعريف وبنية الحمض النووي الريبوزي منقوص الأكسجين</div>
+      <div class="card-arrow">ابدأ الدرس ←</div>
+    </a>
+    <a href="#genetics" class="lesson-card" style="--card-color: rgba(247,201,72,0.4); --card-color2: #c8a000;">
+      <div class="card-num" style="background: linear-gradient(135deg,#f7c948,#c8a000);">🔬</div>
+      <div class="card-title">المورثة والنمط الظاهري</div>
+      <div class="card-desc">العلاقة بين المورثات والصفات الوراثية والظاهرية</div>
+      <div class="card-arrow">ابدأ الدرس ←</div>
+    </a>
+    <a href="#mutation" class="lesson-card" style="--card-color: rgba(255,107,107,0.4); --card-color2: #c0392b;">
+      <div class="card-num" style="background: linear-gradient(135deg,#ff6b6b,#c0392b);">⚡</div>
+      <div class="card-title">الطفرة</div>
+      <div class="card-desc">أنواع الطفرات وأسبابها وتأثيرها على المعلومة الوراثية</div>
+      <div class="card-arrow">ابدأ الدرس ←</div>
+    </a>
+    <a href="#games" class="lesson-card" style="--card-color: rgba(79,195,247,0.4); --card-color2: #0288d1;">
+      <div class="card-num" style="background: linear-gradient(135deg,#4fc3f7,#0288d1);">🎮</div>
+      <div class="card-title">الألعاب التفاعلية</div>
+      <div class="card-desc">اختبر معلوماتك من خلال ألعاب ممتعة وتحديات تعليمية</div>
+      <div class="card-arrow">العب الآن ←</div>
+    </a>
+  </div>
+</div>
+
+<!-- ===== LESSON 1: ADN ===== -->
+<section id="adn">
+  <div class="section-header">
+    <div class="section-icon" style="background: linear-gradient(135deg,rgba(0,200,150,0.2),rgba(0,200,150,0.05)); border: 1px solid rgba(0,200,150,0.3);">🧬</div>
+    <div>
+      <div class="section-title">الـ <span>ADN</span></div>
+      <div class="section-line"></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="content-block">
+    <div class="block-title">تعريف الـ ADN</div>
+    <div class="block-text">
+      الـ <strong style="color:var(--green)">ADN (Acide DésoxyriboNucléique)</strong> أو الحمض النووي الريبوزي منقوص الأكسجين هو جزيء حيوي ضخم يوجد داخل نواة الخلايا الحقيقية النواة، وفي المادة النووية للخلايا بدائية النواة.<br><br>
+      يحمل الـ ADN <strong style="color:var(--accent)">المعلومة الوراثية</strong> (البرنامج الجيني) الذي يتحكم في صفات الكائن الحي ويُنقل من جيل إلى آخر عبر التكاثر.
+    </div>
+    <div class="highlight-box">
+      💡 <strong>المكانة:</strong> الـ ADN موجود في <strong>النواة</strong> (الـ DNA النووي)، والـ<strong>ميتوكوندريا</strong>، والـ<strong>بلاستيدات الخضراء</strong> في الخلايا النباتية.
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">البنية الجزيئية للـ ADN</div>
+    <div class="block-text">الـ ADN عبارة عن <strong style="color:var(--green)">حلزون مزدوج</strong> (double hélice) اكتُشف سنة 1953 من طرف <strong>واتسون وكريك</strong>، يتكون من سلسلتين متعاكستتين ومترابطتين بالروابط الهيدروجينية.</div>
+
+    <div class="dna-structure">
+      <div class="struct-item">
+        <div class="emoji">🍬</div>
+        <div class="label">سكر الديوكسيريبوز</div>
+        <div class="desc">سكر خماسي الكربون (C₅H₁₀O₄)</div>
+      </div>
+      <div class="struct-item">
+        <div class="emoji">⚛️</div>
+        <div class="label">مجموعة الفوسفات</div>
+        <div class="desc">PO₄³⁻ تربط النيوكليوتيدات</div>
+      </div>
+      <div class="struct-item">
+        <div class="emoji">🔤</div>
+        <div class="label">القاعدة الآزوتية</div>
+        <div class="desc">4 قواعد: A, T, G, C</div>
+      </div>
+      <div class="struct-item">
+        <div class="emoji">🔗</div>
+        <div class="label">رابطة هيدروجينية</div>
+        <div class="desc">تربط القواعد المتممة بين السلسلتين</div>
+      </div>
+    </div>
+
+    <div class="block-text">كل وحدة بناء في الـ ADN تسمى <strong style="color:var(--green)">نيوكليوتيد (nucléotide)</strong>، وتتكون من: سكر + فوسفات + قاعدة آزوتية.</div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">القواعد الآزوتية وقاعدة التكامل</div>
+    <div class="block-text">توجد 4 قواعد آزوتية مقسمة إلى مجموعتين:</div>
+
+    <table class="bases-table">
+      <tr>
+        <th>القاعدة</th><th>الرمز</th><th>النوع</th><th>قاعدتها المتممة</th><th>نوع الرابطة</th>
+      </tr>
+      <tr>
+        <td>الأدينين</td><td class="base-A">A</td><td>بيورين</td><td class="base-T">T</td><td>رابطتان هيدروجينيتان</td>
+      </tr>
+      <tr>
+        <td>الثيمين</td><td class="base-T">T</td><td>بيريميدين</td><td class="base-A">A</td><td>رابطتان هيدروجينيتان</td>
+      </tr>
+      <tr>
+        <td>الغوانين</td><td class="base-G">G</td><td>بيورين</td><td class="base-C">C</td><td>ثلاث روابط هيدروجينية</td>
+      </tr>
+      <tr>
+        <td>السيتوزين</td><td class="base-C">C</td><td>بيريميدين</td><td class="base-G">G</td><td>ثلاث روابط هيدروجينية</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box">
+      📌 <strong>قاعدة تشارغاف:</strong> في أي جزيء ADN: <span class="base-A">A</span> = <span class="base-T">T</span> و <span class="base-G">G</span> = <span class="base-C">C</span>، وبالتالي: A+G = T+C
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">تضاعف الـ ADN (Réplication)</div>
+    <div class="block-text">
+      يتضاعف الـ ADN وفق نموذج <strong style="color:var(--green)">شبه محافظ (semi-conservatrice)</strong> حيث:
+    </div>
+    <div class="highlight-box">
+      <strong>المراحل:</strong><br>
+      1️⃣ انفصال السلسلتين بفضل إنزيم الـ <strong>Hélicase</strong> عند كسر الروابط الهيدروجينية<br>
+      2️⃣ كل سلسلة تصبح قالباً لتركيب سلسلة جديدة<br>
+      3️⃣ إنزيم <strong>ADN Polymérase</strong> يضيف النيوكليوتيدات المتممة<br>
+      4️⃣ النتيجة: جزيئان ADN متطابقان، كل منهما يحتوي سلسلة أصلية وأخرى جديدة
+    </div>
+  </div>
+</section>
+
+<!-- ===== LESSON 2: GENETICS ===== -->
+<section id="genetics">
+  <div class="section-header">
+    <div class="section-icon" style="background: linear-gradient(135deg,rgba(247,201,72,0.2),rgba(247,201,72,0.05)); border: 1px solid rgba(247,201,72,0.3);">🔬</div>
+    <div>
+      <div class="section-title">المورثة والنمط <span>الظاهري</span> والوراثي</div>
+      <div class="section-line" style="background: linear-gradient(90deg, var(--accent), transparent);"></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="content-block">
+    <div class="block-title">المفاهيم الأساسية</div>
+    <div class="genetics-diagram">
+      <div class="geno-item">
+        <div class="geno-icon">🧬</div>
+        <div class="geno-label">المورثة (Gène)</div>
+        <div class="geno-desc">قطعة من ADN تحدد صفة وراثية معينة، توجد في موضع محدد على الكروموسوم يسمى الموقع (locus)</div>
+      </div>
+      <div class="geno-item">
+        <div class="geno-icon">👁️</div>
+        <div class="geno-label">النمط الظاهري (Phénotype)</div>
+        <div class="geno-desc">مجموع الصفات الملاحظة والقابلة للقياس في كائن حي على المستوى المجهري والعياني</div>
+      </div>
+      <div class="geno-item">
+        <div class="geno-icon">🔑</div>
+        <div class="geno-label">النمط الوراثي (Génotype)</div>
+        <div class="geno-desc">مجموع المعلومات الوراثية التي يحملها الفرد في مورثاته بغض النظر عن تعبيرها</div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      🌟 <strong>العلاقة:</strong> النمط الظاهري = النمط الوراثي + تأثير البيئة<br>
+      <em>Phénotype = Génotype + Environnement</em>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">الأليلات والسيادة</div>
+    <div class="block-text">الأليلات هي الأشكال المختلفة للمورثة الواحدة. كل فرد ثنائي المجموعة الكروموسومية يحمل <strong style="color:var(--accent)">أليلين</strong> لكل مورثة.</div>
+    <div class="allele-box">
+      <div class="allele" style="--col: #4fc3f7;">A (سائد)</div>
+      <div class="allele" style="--col: rgba(255,255,255,0.3);">a (متنحٍّ)</div>
+      <div class="allele" style="--col: #4fc3f7;">AA (متماثل سائد)</div>
+      <div class="allele" style="--col: #81c784;">Aa (متخالف)</div>
+      <div class="allele" style="--col: #ff6b6b;">aa (متماثل متنحٍّ)</div>
+    </div>
+    <div class="highlight-box">
+      <strong>السيادة والتنحي:</strong><br>
+      ✅ <strong>الأليل السائد (Dominant)</strong>: يعبّر عن نفسه حتى بوجود نسخة واحدة (AA أو Aa)<br>
+      ❌ <strong>الأليل المتنحي (Récessif)</strong>: لا يعبّر عن نفسه إلا في حالة التماثل (aa)
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">مربع بانيت (Échiquier de Punnett)</div>
+    <div class="block-text">أداة لتوقع نسب النسل في التهجين أحادي الهجين (Aa × Aa):</div>
+    <div style="overflow-x:auto;">
+    <div class="punnett">
+      <div class="punnett-cell" style="background:transparent;"></div>
+      <div class="punnett-cell header">A</div>
+      <div class="punnett-cell header">a</div>
+      <div class="punnett-cell header">A</div>
+      <div class="punnett-cell result">AA</div>
+      <div class="punnett-cell result">Aa</div>
+      <div class="punnett-cell header">a</div>
+      <div class="punnett-cell result">Aa</div>
+      <div class="punnett-cell recessive">aa</div>
+    </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      📊 <strong>النتائج:</strong> 1/4 AA · 2/4 Aa · 1/4 aa<br>
+      النسبة الظاهرية: <strong>3 سائد : 1 متنحٍّ</strong><br>
+      النسبة الوراثية: <strong>1 AA : 2 Aa : 1 aa</strong>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">التعبير الجيني: من ADN إلى بروتين</div>
+    <div class="block-text">المعلومة الوراثية المحفوظة في ADN تُعبّر عنها عبر مرحلتين:</div>
+    <div class="highlight-box">
+      🔄 <strong>النسخ (Transcription):</strong> ADN → ARNm (في النواة)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;السلسلة المقالبة من ADN تُنسخ إلى ARN مرسال<br><br>
+      🏭 <strong>الترجمة (Traduction):</strong> ARNm → بروتين (في السيتوبلازم)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;الريبوسومات تقرأ الكودونات وتربط الأحماض الأمينية<br><br>
+      📌 <strong>الكودون:</strong> 3 نيوكليوتيدات متتالية تُشفّر حمضاً أمينياً واحداً
+    </div>
+  </div>
+</section>
+
+<!-- ===== LESSON 3: MUTATION ===== -->
+<section id="mutation">
+  <div class="section-header">
+    <div class="section-icon" style="background: linear-gradient(135deg,rgba(255,107,107,0.2),rgba(255,107,107,0.05)); border: 1px solid rgba(255,107,107,0.3);">⚡</div>
+    <div>
+      <div class="section-title">الـ<span style="color:var(--accent2)">طفرة</span></div>
+      <div class="section-line" style="background: linear-gradient(90deg, var(--accent2), transparent);"></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="content-block">
+    <div class="block-title">تعريف الطفرة</div>
+    <div class="block-text">
+      الطفرة (Mutation) هي <strong style="color:var(--accent2)">تغيير دائم ومفاجئ</strong> في تسلسل القواعد الآزوتية للـ ADN، وبالتالي في المعلومة الوراثية. تحدث الطفرات بشكل تلقائي أو نتيجة عوامل خارجية مطفّرة.
+    </div>
+    <div class="highlight-box" style="border-color:rgba(255,107,107,0.3); background:rgba(255,107,107,0.05);">
+      ⚠️ الطفرة يمكن أن تكون: <strong>ضارة</strong> (أمراض) · <strong>محايدة</strong> (لا تأثير) · <strong>نافعة</strong> (نادرة، تُحسّن التكيف)
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">أنواع الطفرات</div>
+    <div class="mutation-types">
+      <div class="mut-card">
+        <div class="mut-title">🔄 الاستبدال (Substitution)</div>
+        <div class="mut-text">استبدال قاعدة آزوتية بأخرى. مثال: تغيير A→G في موضع معين من السلسلة. قد تغير الحمض الأميني المُشفَّر أو لا تغيّره (طفرة صامتة).</div>
+      </div>
+      <div class="mut-card">
+        <div class="mut-title">➕ الإدراج (Insertion)</div>
+        <div class="mut-text">إضافة قاعدة أو أكثر في تسلسل الـ ADN. تؤدي إلى إزاحة إطار القراءة وتغيير جميع الكودونات اللاحقة.</div>
+      </div>
+      <div class="mut-card">
+        <div class="mut-title">➖ الحذف (Délétion)</div>
+        <div class="mut-text">حذف قاعدة أو أكثر من التسلسل. كالإدراج، تؤدي إلى إزاحة إطار القراءة وتغيير كبير في البروتين الناتج.</div>
+      </div>
+      <div class="mut-card">
+        <div class="mut-title">🔃 الانعكاس (Inversion)</div>
+        <div class="mut-text">انقلاب قطعة من الكروموسوم بزاوية 180°، مما يغير ترتيب القواعد في تلك المنطقة.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">محاكاة الطفرة التفاعلية</div>
+    <div class="dna-change">
+      <div class="seq-label">التسلسل الأصلي:</div>
+      <div class="seq-row" id="original-seq">
+        <div class="base-box A">A</div><div class="base-box T">T</div><div class="base-box G">G</div>
+        <div class="base-box C">C</div><div class="base-box T">T</div><div class="base-box A">A</div>
+        <div class="base-box G">G</div><div class="base-box C">C</div>
+      </div>
+      <div class="arrow-down">↓</div>
+      <div class="seq-label" id="mut-label">التسلسل بعد الطفرة:</div>
+      <div class="seq-row" id="mutated-seq">
+        <div class="base-box A">A</div><div class="base-box T">T</div><div class="base-box G">G</div>
+        <div class="base-box C">C</div><div class="base-box T">T</div><div class="base-box A">A</div>
+        <div class="base-box G">G</div><div class="base-box C">C</div>
+      </div>
+      <br>
+      <button class="btn-mut" onclick="applyMutation('sub')">🔄 استبدال</button>
+      <button class="btn-mut" style="background:linear-gradient(135deg,#f7c948,#c8a000);color:#000;" onclick="applyMutation('ins')">➕ إدراج</button>
+      <button class="btn-mut" style="background:linear-gradient(135deg,#81c784,#388e3c);" onclick="applyMutation('del')">➖ حذف</button>
+      <button class="btn-mut" style="background:rgba(255,255,255,0.1);color:white;" onclick="resetMut()">↺ إعادة</button>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <div class="block-title">العوامل المطفّرة (Agents Mutagènes)</div>
+    <div class="block-text">
+      العوامل التي ترفع من معدل حدوث الطفرات تنقسم إلى:
+    </div>
+    <div class="highlight-box" style="border-color:rgba(255,107,107,0.3); background:rgba(255,107,107,0.05);">
+      ☢️ <strong>فيزيائية:</strong> الأشعة فوق البنفسجية (UV)، الأشعة السينية (X)، الإشعاعات النووية<br><br>
+      🧪 <strong>كيميائية:</strong> الأفلاتوكسينات، النيتروزامينات، بعض المبيدات الحشرية، التبغ<br><br>
+      🦠 <strong>بيولوجية:</strong> بعض الفيروسات كـ HPV، وفيروس التهاب الكبد B
+    </div>
+    <div class="highlight-box">
+      🛡️ <strong>آليات الإصلاح:</strong> تمتلك الخلية إنزيمات خاصة (Enzymes de réparation) تتعرف على الطفرات وتصلحها قبل تضاعف الـ ADN. عند فشل هذه الآليات يمكن أن تتطور إلى أمراض كالسرطان.
+    </div>
+  </div>
+</section>
+
+<!-- ===== GAMES ===== -->
+<div id="games">
+  <div class="section-header">
+    <div class="section-icon" style="background: linear-gradient(135deg,rgba(79,195,247,0.2),rgba(79,195,247,0.05)); border: 1px solid rgba(79,195,247,0.3);">🎮</div>
+    <div>
+      <div class="section-title">الألعاب <span style="color:#4fc3f7">التفاعلية</span></div>
+      <div class="section-line" style="background: linear-gradient(90deg, #4fc3f7, transparent);"></div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="games-grid">
+    <!-- QUIZ -->
+    <div class="game-panel">
+      <div class="game-title">🧠 اختبار المعلومات</div>
+      <div class="game-sub">أجب على الأسئلة واختبر فهمك للدروس</div>
+      <div class="score-box">السؤال: <span id="q-num">1</span>/8 | النقاط: <span id="score">0</span></div>
+      <div class="quiz-question" id="quiz-q">جار التحميل...</div>
+      <div class="quiz-options" id="quiz-opts"></div>
+      <div class="quiz-feedback" id="quiz-fb"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">السؤال التالي ←</button>
+    </div>
+
+    <!-- COMPLEMENT GAME -->
+    <div class="game-panel">
+      <div class="game-title">🔗 أكمل السلسلة المتممة</div>
+      <div class="game-sub">أدخل القواعد المتممة للسلسلة المعطاة</div>
+      <div class="sequence-game">
+        <div class="seq-display">
+          <div class="seq-label">السلسلة المعطاة (5'→3'):</div>
+          <div class="seq-row" id="given-seq"></div>
+          <div class="seq-label" style="margin-top:14px;">اختر القواعد المتممة بالترتيب (3'→5'):</div>
+          <div class="comp-input">
+            <button class="base-btn A" onclick="addBase('A')">A</button>
+            <button class="base-btn T" onclick="addBase('T')">T</button>
+            <button class="base-btn G" onclick="addBase('G')">G</button>
+            <button class="base-btn C" onclick="addBase('C')">C</button>
+          </div>
+          <div class="seq-label">إجابتك:</div>
+          <div class="user-seq" id="user-seq"></div>
+          <div class="seq-check-row">
+            <button class="btn-check" onclick="checkComplement()">✔ تحقق</button>
+            <button class="btn-clear" onclick="clearSeq()">✖ مسح</button>
+            <button class="btn-clear" onclick="newSeq()">🔀 سلسلة جديدة</button>
+          </div>
+          <div class="drag-result" id="comp-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAG DROP -->
+    <div class="game-panel">
+      <div class="game-title">🧩 صنّف المصطلحات</div>
+      <div class="game-sub">اسحب كل مصطلح إلى التصنيف الصحيح</div>
+      <div class="drag-area">
+        <div class="drag-label">المصطلحات (اضغط للنقل):</div>
+        <div class="drag-items" id="drag-items"></div>
+        <div class="drag-label">ضعها في التصنيف المناسب:</div>
+        <div class="drop-zones" id="drop-zones"></div>
+        <button class="btn-check" onclick="checkDrag()">✔ تحقق من الإجابات</button>
+        <button class="btn-clear" onclick="resetDrag()" style="margin-right:8px;">↺ إعادة</button>
+        <div class="drag-result" id="drag-result"></div>
+      </div>
+    </div>
+
+    <!-- MEMORY -->
+    <div class="game-panel">
+      <div class="game-title">🃏 لعبة الذاكرة</div>
+      <div class="game-sub">طابق كل مصطلح بتعريفه</div>
+      <div id="memory-game" style="margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  صُمّم خصيصاً لطلاب السنة الثانية ثانوي · شعبة العلوم التجريبية 🧬 | بيوسيانس 2025
+</footer>
+
+<script>
+// ===== NAV ACTIVE =====
+function setActive(el) {
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== MUTATION DEMO =====
+const origSeq = ['A','T','G','C','T','A','G','C'];
+const baseClass = {A:'A',T:'T',G:'G',C:'C'};
+const complement = {A:'T',T:'A',G:'C',C:'G'};
+
+function renderSeq(seq, containerId, mutIdx=-1) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  seq.forEach((b,i) => {
+    const d = document.createElement('div');
+    d.className = 'base-box ' + (i===mutIdx ? 'MUT' : baseClass[b]);
+    d.textContent = b;
+    c.appendChild(d);
+  });
+}
+
+function applyMutation(type) {
+  let seq = [...origSeq];
+  const idx = Math.floor(Math.random() * seq.length);
+  const bases = ['A','T','G','C'];
+  if(type === 'sub') {
+    let nb = bases.filter(b => b !== seq[idx]);
+    seq[idx] = nb[Math.floor(Math.random()*nb.length)];
+    document.getElementById('mut-label').textContent = '🔄 الاستبدال: القاعدة ' + (idx+1) + ' تغيّرت إلى ' + seq[idx];
+    renderSeq(seq, 'mutated-seq', idx);
+  } else if(type === 'ins') {
+    const newB = bases[Math.floor(Math.random()*4)];
+    seq.splice(idx, 0, newB);
+    document.getElementById('mut-label').textContent = '➕ إدراج: أُضيفت القاعدة ' + newB + ' في الموضع ' + (idx+1);
+    renderSeq(seq, 'mutated-seq', idx);
+  } else if(type === 'del') {
+    seq.splice(idx, 1);
+    document.getElementById('mut-label').textContent = '➖ حذف: حُذفت القاعدة في الموضع ' + (idx+1);
+    renderSeq(seq, 'mutated-seq', -1);
+  }
+}
+function resetMut() {
+  document.getElementById('mut-label').textContent = 'التسلسل بعد الطفرة:';
+  renderSeq(origSeq, 'mutated-seq');
+}
+renderSeq(origSeq, 'original-seq');
+renderSeq(origSeq, 'mutated-seq');
+
+// ===== QUIZ =====
+const questions = [
+  { q: 'ما هي الوحدة البنائية للـ ADN؟', opts: ['الحمض الأميني','النيوكليوتيد','الريبوز','الفوسفوليبيد'], ans: 1 },
+  { q: 'ما هي القاعدة المتممة للأدينين (A) في ADN؟', opts: ['يوراسيل (U)','ثيمين (T)','غوانين (G)','سيتوزين (C)'], ans: 1 },
+  { q: 'من اكتشف البنية الحلزونية للـ ADN سنة 1953؟', opts: ['داروين وميندل','واتسون وكريك','باستور وكوخ','لامارك وكوفييه'], ans: 1 },
+  { q: 'ما الفرق بين النمط الوراثي والنمط الظاهري؟', opts: ['لا فرق بينهما','النمط الوراثي هو الـ ADN، الظاهري هو التعبير المرئي','النمط الظاهري أكثر دقة','النمط الوراثي يتغير بالبيئة'], ans: 1 },
+  { q: 'ما نوع الطفرة التي تحدث فيها إضافة قاعدة جديدة؟', opts: ['الاستبدال','الحذف','الإدراج','الانعكاس'], ans: 2 },
+  { q: 'ما هو عدد القواعد الآزوتية التي تُشكّل كودوناً واحداً؟', opts: ['اثنتان','ثلاث','أربع','واحدة'], ans: 1 },
+  { q: 'أين يجري تضاعف الـ ADN في الخلية حقيقية النواة؟', opts: ['السيتوبلازم','الميتوكوندريا','النواة','الريبوسوم'], ans: 2 },
+  { q: 'ما المقصود بالأليل المتنحي؟', opts: ['يعبّر عن نفسه دائماً','يعبّر فقط عند وجود نسختين منه (aa)','هو نفسه الأليل السائد','يوجد فقط في الذكور'], ans: 1 },
+];
+let qIdx = 0, scoreVal = 0, answered = false;
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[qIdx];
+  document.getElementById('quiz-q').textContent = q.q;
+  document.getElementById('q-num').textContent = qIdx+1;
+  const opts = document.getElementById('quiz-opts');
+  opts.innerHTML = '';
+  const fb = document.getElementById('quiz-fb');
+  fb.className = 'quiz-feedback'; fb.textContent = '';
+  document.getElementById('btn-next').classList.remove('show');
+  q.opts.forEach((opt,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      if(answered) return; answered = true;
+      document.querySelectorAll('.quiz-opt').forEach(b => b.style.pointerEvents='none');
+      if(i === q.ans) {
+        btn.classList.add('correct');
+        scoreVal++;
+        document.getElementById('score').textContent = scoreVal;
+        fb.className = 'quiz-feedback show ok';
+        fb.textContent = '✅ إجابة صحيحة! أحسنت!';
+      } else {
+        btn.classList.add('wrong');
+        document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+        fb.className = 'quiz-feedback show err';
+        fb.textContent = '❌ الإجابة الصحيحة: ' + q.opts[q.ans];
+      }
+      if(qIdx < questions.length-1) document.getElementById('btn-next').classList.add('show');
+      else { fb.textContent += ' | انتهى الاختبار! نقاطك: '+scoreVal+'/'+questions.length; }
+    };
+    opts.appendChild(btn);
+  });
+}
+function nextQuestion() {
+  qIdx++;
+  if(qIdx < questions.length) loadQuestion();
+}
+loadQuestion();
+
+// ===== COMPLEMENT GAME =====
+const seqs = [
+  ['A','T','G','C','A','T'],
+  ['G','C','T','A','G','C'],
+  ['T','A','C','G','T','A'],
+  ['C','G','A','T','C','G'],
+];
+let currentSeq = [], userBases = [];
+
+function renderGivenSeq() {
+  const c = document.getElementById('given-seq');
+  c.innerHTML = '';
+  currentSeq.forEach(b => {
+    const d = document.createElement('div');
+    d.className = 'base-box ' + b;
+    d.textContent = b;
+    c.appendChild(d);
+  });
+}
+function renderUserSeq() {
+  const c = document.getElementById('user-seq');
+  c.innerHTML = '';
+  userBases.forEach((b,i) => {
+    const d = document.createElement('div');
+    d.className = 'base-box ' + b;
+    d.textContent = b;
+    d.onclick = () => { userBases.splice(i,1); renderUserSeq(); };
+    c.appendChild(d);
+  });
+}
+function addBase(b) {
+  if(userBases.length >= currentSeq.length) return;
+  userBases.push(b);
+  renderUserSeq();
+}
+function clearSeq() { userBases = []; renderUserSeq(); document.getElementById('comp-result').className='drag-result'; }
+function newSeq() {
+  currentSeq = seqs[Math.floor(Math.random()*seqs.length)];
+  userBases = [];
+  renderGivenSeq(); renderUserSeq();
+  document.getElementById('comp-result').className='drag-result';
+}
+function checkComplement() {
+  const r = document.getElementById('comp-result');
+  if(userBases.length < currentSeq.length) { r.className='drag-result show err'; r.textContent='⚠️ أكمل السلسلة أولاً!'; return; }
+  const correct = currentSeq.map(b => complement[b]);
+  const ok = userBases.every((b,i) => b === correct[i]);
+  if(ok) { r.className='drag-result show ok'; r.textContent='✅ ممتاز! السلسلة المتممة صحيحة!'; }
+  else { r.className='drag-result show err'; r.textContent='❌ الإجابة الصحيحة: ' + correct.join('-'); }
+}
+newSeq();
+
+// ===== DRAG DROP (click-based) =====
+const dragData = [
+  {term:'النيوكليوتيد', cat:'ADN'},
+  {term:'الأدينين', cat:'القواعد الآزوتية'},
+  {term:'الكودون', cat:'ARN'},
+  {term:'الأليل', cat:'الوراثة'},
+  {term:'الثيمين', cat:'القواعد الآزوتية'},
+  {term:'الفينوتيب', cat:'الوراثة'},
+  {term:'الهيليكاز', cat:'ADN'},
+  {term:'الريبوسوم', cat:'ARN'},
+];
+const cats = ['ADN','ARN','القواعد الآزوتية','الوراثة'];
+let dragState = {};
+
+function initDrag() {
+  dragState = {};
+  cats.forEach(c => dragState[c] = []);
+  const items = document.getElementById('drag-items');
+  items.innerHTML = '';
+  const shuffled = [...dragData].sort(() => Math.random()-0.5);
+  shuffled.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.textContent = d.term;
+    el.dataset.term = d.term;
+    el.dataset.cat = d.cat;
+    el.onclick = () => pickItem(el);
+    items.appendChild(el);
+  });
+  renderZones();
+  document.getElementById('drag-result').className='drag-result';
+}
+let selected = null;
+function pickItem(el) {
+  if(selected) { selected.style.outline=''; selected=null; }
+  selected = el; el.style.outline='2px solid var(--green)';
+}
+function renderZones() {
+  const zones = document.getElementById('drop-zones');
+  zones.innerHTML = '';
+  cats.forEach(cat => {
+    const z = document.createElement('div');
+    z.className = 'drop-zone';
+    z.innerHTML = `<div class="zone-label">${cat}</div><div class="zone-content" id="zone-${cat.replace(/\s/g,'_')}"></div>`;
+    z.onclick = () => {
+      if(!selected) return;
+      const term = selected.dataset.term;
+      // remove from all zones
+      cats.forEach(c => dragState[c] = dragState[c].filter(t => t !== term));
+      dragState[cat].push(term);
+      selected.style.outline='';
+      selected.style.opacity='0.4';
+      selected.style.pointerEvents='none';
+      selected = null;
+      renderZoneContents();
+    };
+    zones.appendChild(z);
+  });
+  renderZoneContents();
+}
+function renderZoneContents() {
+  cats.forEach(cat => {
+    const zc = document.getElementById('zone-'+cat.replace(/\s/g,'_'));
+    if(!zc) return;
+    zc.innerHTML = '';
+    dragState[cat].forEach(term => {
+      const sp = document.createElement('span');
+      sp.className = 'zone-dropped';
+      sp.textContent = term;
+      sp.onclick = (e) => {
+        e.stopPropagation();
+        dragState[cat] = dragState[cat].filter(t => t !== term);
+        // re-enable
+        document.querySelectorAll('.drag-item').forEach(el => {
+          if(el.dataset.term === term) { el.style.opacity=''; el.style.pointerEvents=''; }
+        });
+        renderZoneContents();
+      };
+      zc.appendChild(sp);
+    });
+  });
+}
+function checkDrag() {
+  let correct = 0, total = 0;
+  cats.forEach(cat => {
+    dragState[cat].forEach(term => {
+      total++;
+      const orig = dragData.find(d => d.term === term);
+      if(orig && orig.cat === cat) correct++;
+    });
+  });
+  const r = document.getElementById('drag-result');
+  r.className = 'drag-result show ' + (correct === dragData.length ? 'ok' : 'err');
+  r.textContent = `${correct === dragData.length ? '✅ ممتاز!' : '⚠️'} ${correct}/${dragData.length} إجابة صحيحة`;
+}
+function resetDrag() { initDrag(); }
+initDrag();
+
+// ===== MEMORY GAME =====
+const memPairs = [
+  ['ADN','حمض نووي يحمل المعلومة الوراثية'],
+  ['الطفرة','تغيير في تسلسل القواعد الآزوتية'],
+  ['الكودون','ثلاث قواعد تُشفّر حمضاً أمينياً'],
+  ['الفينوتيب','الصفات الملاحظة للكائن الحي'],
+  ['الأليل','شكل مختلف من المورثة'],
+  ['الريبوسوم','عضية تصنيع البروتينات'],
+];
+let memCards = [], memFlipped = [], memMatched = [];
+function initMemory() {
+  const container = document.getElementById('memory-game');
+  let cards = [];
+  memPairs.forEach((p,i) => {
+    cards.push({id:i*2,pairId:i,text:p[0],type:'term'});
+    cards.push({id:i*2+1,pairId:i,text:p[1],type:'def'});
+  });
+  cards.sort(() => Math.random()-0.5);
+  memCards = cards; memFlipped = []; memMatched = [];
+  container.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      ${cards.map((c,i) => `
+        <div id="mc-${i}" onclick="flipCard(${i})"
+          style="background:rgba(79,195,247,0.07);border:1.5px solid rgba(79,195,247,0.2);
+          border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;
+          min-height:64px;display:flex;align-items:center;justify-content:center;
+          font-size:0.75rem;line-height:1.4;color:rgba(249,254,254,0.4);
+          transition:all 0.3s;">❓</div>
+      `).join('')}
+    </div>
+    <div style="margin-top:12px;font-size:0.82rem;color:rgba(249,254,254,0.4);" id="mem-status">اضغط على البطاقات للكشف عنها وطابق كل مصطلح بتعريفه</div>
+    <button class="btn-clear" onclick="initMemory()" style="margin-top:10px;">↺ إعادة اللعبة</button>
+  `;
+}
+function flipCard(i) {
+  if(memFlipped.length >= 2) return;
+  if(memMatched.includes(i) || memFlipped.includes(i)) return;
+  const el = document.getElementById('mc-'+i);
+  const c = memCards[i];
+  el.textContent = c.text;
+  el.style.color = c.type==='term' ? '#4fc3f7' : 'rgba(249,254,254,0.85)';
+  el.style.borderColor = c.type==='term' ? 'rgba(79,195,247,0.5)' : 'rgba(0,200,150,0.3)';
+  el.style.background = c.type==='term' ? 'rgba(79,195,247,0.12)' : 'rgba(0,200,150,0.06)';
+  memFlipped.push(i);
+  if(memFlipped.length === 2) {
+    const [a,b] = memFlipped;
+    if(memCards[a].pairId === memCards[b].pairId && memCards[a].type !== memCards[b].type) {
+      [a,b].forEach(idx => {
+        document.getElementById('mc-'+idx).style.borderColor = 'var(--green)';
+        document.getElementById('mc-'+idx).style.background = 'rgba(0,200,150,0.15)';
+      });
+      memMatched.push(a,b);
+      memFlipped = [];
+      if(memMatched.length === memCards.length) {
+        document.getElementById('mem-status').textContent = '🎉 أحسنت! طابقت جميع البطاقات!';
+        document.getElementById('mem-status').style.color = 'var(--green)';
+      }
+    } else {
+      setTimeout(() => {
+        [a,b].forEach(idx => {
+          const el2 = document.getElementById('mc-'+idx);
+          if(el2) { el2.textContent='❓'; el2.style.color='rgba(249,254,254,0.4)'; el2.style.borderColor='rgba(79,195,247,0.2)'; el2.style.background='rgba(79,195,247,0.07)'; }
+        });
+        memFlipped = [];
+      }, 900);
+    }
+  }
+}
+initMemory();
+</script>
+</body>
+</html>
